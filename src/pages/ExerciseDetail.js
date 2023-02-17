@@ -6,9 +6,21 @@ import { exerciseOptions, fetchData } from '../utils/fetchData'
 import { Detail, ExerciseVideos, SimilarExercises } from '../components'
 
 const ExerciseDetail = () => {
+  const [ExerciseDetail, setExerciseDetail] = useState({})
+  const { id } = useParams()
+  useEffect(() => {
+    const fetchExercisesData = async () => {
+      const exerciseBdUrl = 'https://exercisedb.p.rapidapi.com'
+      const youtubeSearchUrl = 'https://youtube-search-and-download.p.rapidapi.com'
+      const exerciseDetailData = await fetchData(`${exerciseBdUrl}/exercises/${id}`, exerciseOptions)
+      setExerciseDetail(exerciseDetailData)
+    }
+    fetchExercisesData()
+  }, [id])
+
 	return (
 		<Box>
-			<Detail />
+			<Detail ExerciseDetail={ExerciseDetail} />
 			<ExerciseVideos />
 			<SimilarExercises />
 		</Box>
