@@ -7,7 +7,7 @@ import { Detail, ExerciseVideos, SimilarExercises } from '../components'
 
 const ExerciseDetail = () => {
 	const [ExerciseDetail, setExerciseDetail] = useState({})
-  const [exerciseVideos, setExerciseVideos] = useState([])
+	const [exerciseVideos, setExerciseVideos] = useState([])
 	const { id } = useParams()
 	useEffect(() => {
 		const fetchExercisesData = async () => {
@@ -17,9 +17,11 @@ const ExerciseDetail = () => {
 			const exerciseDetailData = await fetchData(`${exerciseDbUrl}/exercises/exercise/${id}`, exerciseOptions)
 			setExerciseDetail(exerciseDetailData)
 
-      const exerciseVideosData = await fetchData(`${youtubeSearchUrl}/search?query=${exerciseDetailData.name}`, youtubeOptions)
-      setExerciseVideos(exerciseVideosData)
-
+			const exerciseVideosData = await fetchData(
+				`${youtubeSearchUrl}/search?query=${exerciseDetailData.name} exercise`,
+				youtubeOptions
+			)
+			setExerciseVideos(exerciseVideosData.contents)
 		}
 		fetchExercisesData()
 	}, [id])
@@ -27,7 +29,7 @@ const ExerciseDetail = () => {
 	return (
 		<Box>
 			<Detail ExerciseDetail={ExerciseDetail} />
-			<ExerciseVideos exerciseVideos={exerciseVideos} name={exerciseDetail.name} />
+			<ExerciseVideos exerciseVideos={exerciseVideos} />
 			<SimilarExercises />
 		</Box>
 	)
