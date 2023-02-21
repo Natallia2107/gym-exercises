@@ -6,12 +6,15 @@ import { exerciseOptions, fetchData, youtubeOptions } from '../utils/fetchData'
 import { Detail, ExerciseVideos, SimilarExercises } from '../components'
 
 const ExerciseDetail = () => {
-	const [ExerciseDetail, setExerciseDetail] = useState({})
+	const [exerciseDetail, setExerciseDetail] = useState({})
 	const [exerciseVideos, setExerciseVideos] = useState([])
 	const [targetMuscleExercises, setTargetMuscleExercises] = useState([])
 	const [equipmentExercises, setEquipmentExercises] = useState([])
 	const { id } = useParams()
+
 	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+
 		const fetchExercisesData = async () => {
 			const exerciseDbUrl = 'https://exercisedb.p.rapidapi.com'
 			const youtubeSearchUrl = 'https://youtube-search-and-download.p.rapidapi.com'
@@ -40,10 +43,12 @@ const ExerciseDetail = () => {
 		fetchExercisesData()
 	}, [id])
 
+	if (!exerciseDetail) return <div>No Data</div>
+
 	return (
-		<Box>
-			<Detail ExerciseDetail={ExerciseDetail} />
-			<ExerciseVideos exerciseVideos={exerciseVideos} />
+		<Box sx={{ mt: { lg: '96px', xs: '60px' } }}>
+			<Detail exerciseDetail={exerciseDetail} />
+			<ExerciseVideos exerciseVideos={exerciseVideos} name={exerciseDetail.name} />
 			<SimilarExercises targetMuscleExercises={targetMuscleExercises} equipmentExercises={equipmentExercises} />
 		</Box>
 	)
