@@ -8,6 +8,8 @@ import { Detail, ExerciseVideos, SimilarExercises } from '../components'
 const ExerciseDetail = () => {
 	const [ExerciseDetail, setExerciseDetail] = useState({})
 	const [exerciseVideos, setExerciseVideos] = useState([])
+	const [targetMuscleExercises, setTargetMuscleExercises] = useState([])
+	const [equipmentExercises, setEquipmentExercises] = useState([])
 	const { id } = useParams()
 	useEffect(() => {
 		const fetchExercisesData = async () => {
@@ -22,6 +24,18 @@ const ExerciseDetail = () => {
 				youtubeOptions
 			)
 			setExerciseVideos(exerciseVideosData.contents)
+
+			const targetMuscleExercisesData = await fetchData(
+				`${exerciseDbUrl}/exercises/target/${exerciseDetailData.target}`,
+				exerciseOptions
+			)
+			setTargetMuscleExercises(targetMuscleExercisesData)
+
+			const equimentExercisesData = await fetchData(
+				`${exerciseDbUrl}/exercises/equipment/${exerciseDetailData.equipment}`,
+				exerciseOptions
+			)
+			setEquipmentExercises(equimentExercisesData)
 		}
 		fetchExercisesData()
 	}, [id])
@@ -30,7 +44,7 @@ const ExerciseDetail = () => {
 		<Box>
 			<Detail ExerciseDetail={ExerciseDetail} />
 			<ExerciseVideos exerciseVideos={exerciseVideos} />
-			<SimilarExercises />
+			<SimilarExercises targetMuscleExercises={targetMuscleExercises} equipmentExercises={equipmentExercises} />
 		</Box>
 	)
 }
